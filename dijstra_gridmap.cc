@@ -34,6 +34,10 @@ typedef std::vector<Position> GridMap;
 int
 main(int, char *[])
 {
+  /* Simulated GridMap. Number are te positions in the vector, used by naming
+   * cells in the dijstra results
+   */
+
   /*                    0            1              2            */
   GridMap grid = { Position(1,1), Position(1,2), Position(1,3),
                    Position(2,1), Position(2,2), Position(2,3) };
@@ -55,11 +59,14 @@ main(int, char *[])
   std::vector<int> weights_v(sizeof(edge_array) , 1);
   int num_arcs = sizeof(edge_array) / sizeof(Edge);
 
+  //graph created from the list of edges
   graph_t g(edge_array, edge_array + num_arcs, weights_v.data(), num_nodes);
-
+  //create the property_map from edges to weights
   property_map<graph_t, edge_weight_t>::type weightmap = get(edge_weight, g);
   std::vector<vertex_descriptor> p(num_vertices(g));
   std::vector<int> d(num_vertices(g));
+
+  //create a descriptor for the source node
   vertex_descriptor s = vertex(0, g);
 
   dijkstra_shortest_paths(g, s,
