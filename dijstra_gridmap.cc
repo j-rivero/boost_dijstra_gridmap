@@ -82,6 +82,37 @@ main(int, char *[])
   }
   std::cout << std::endl;
 
+  // Print the full path to destination
+  // Example: goal is the node number 2
+  vertex_descriptor goal = vertex(2, g);
+  vertex_descriptor start   = s;
+  vertex_descriptor current = goal;
+
+  std::vector<vertex_descriptor> path;
+ 
+  // p is the predecessor map
+  while (current != start)
+  {
+    path.push_back(current);
+    current = p[current];
+  }
+
+  path.push_back(start);
+
+  // The path ha been stored from the end to the beggining. Using
+  // reverse_iterator to get the path from origin to end
+  std::cout << "Path from node " << start << " to node " << goal << std::endl;
+  std::vector< graph_traits< graph_t >::vertex_descriptor >::reverse_iterator it;
+  for (it=path.rbegin(); it != path.rend(); ++it)
+  {
+        if (it != path.rbegin())
+          std::cout << "-> ";
+
+        std::cout << *it << " ";
+  }
+
+  std::cout << std::endl;
+
   // Save file to .dot (graph format files) try open it with nautilus
   std::ofstream dot_file("dijkstra-eg.dot");
 
